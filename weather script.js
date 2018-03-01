@@ -7,22 +7,34 @@
 
  $(document).ready (function(){
 //Check geolocation to get coords
+  navigator.geolocation.getCurrentPosition(
+        function(position) {
+           var lat = position.coords.latitude
+var lon = position.coords.longitude
+        },
+        function errorCallback(error) {
+            alert
+        },
+        {
+            maximumAge:Infinity,
+            timeout:5000
+        }
+    );
+
 
 //define weather + api key
 var key = '&APPID=b804f4d3e596f6dee05285c99ccb597d';
 var api = "http://api.openweathermap.org/data/2.5/weather?q=";
 var city = "Boston"
 var units = "&units=imperial"
-var url = api+input.value()+units+key;
- 
-function setup(){
 
-var button = select('#submit');
-button.mousePressed(getWeather);
+var lat = position.coords.latitude
+var lon = position.coords.longitude
+var url = api+"lat={"+lat+"}"+"&lon={"+lon+"}"+units+key;
 
 //var weather = api+city+"&"+units+"&"+key
 //console.log(weather);
-function getWeather(){
+
 
 	//do not change anything below this line
 
@@ -33,13 +45,10 @@ $.getJSON(url).done(function(data){
 
 
 
- };
+ });
 
  //do not change anything above this line
-};
-   };
 
-  
  
 
 //example from youtube *below*https://www.youtube.com/watch?v=4UoUqnjUC2c
