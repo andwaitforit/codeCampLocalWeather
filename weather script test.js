@@ -8,7 +8,7 @@
 
 function getLocation(){
 	if (navigator.geolocation){
-		return navigator.geolocation.getCurrentPosition(function(location){
+		navigator.geolocation.getCurrentPosition(function(location){
 			var lat = (location.coords.latitude);
  			var lon = (location.coords.longitude);
  			var key = '&APPID=b804f4d3e596f6dee05285c99ccb597d';
@@ -18,22 +18,31 @@ function getLocation(){
 			console.log(url)
 			console.log(location.coords)
 			$.getJSON(url).done(function getWeather(data){
-					var icon = data.weather.icon;
+					var icon = "http://openweathermap.org/img/w/" + data.weather[0].icon + ".png";
 					var temperature = data.main.temp
-					var temp = data.main.temp + "&deg;F";
+					var temp = data.main.temp;
 					var location = data.name
-					var cTemp = (data.main.temp-32)*5/9 + "&deg;C";
+					var celTemp = ((data.main.temp-32)*5/9).toFixed(2);
 console.log(temperature);
 console.log(temp);
 console.log(icon);
 console.log(location);
-console.log(cTemp)
+console.log(celTemp);
 			$("#location").html(location);
-			$("#temperature").html(temp);
+			$("#temperature").html( temp+ "&deg;F");
+$("#icon").attr("src", icon);
 
-				})
 
 
+
+				
+$('#fTemp').click(function(){
+	$("#temperature").html(temp + "&deg;F");
+});
+$('#cTemp').click(function(){
+	$("#temperature").html(celTemp + "&deg;C");
+});
+})
 
 			})
 
@@ -46,17 +55,13 @@ console.log(cTemp)
 };
 
 
-//Change temp by running location/temp function and then manipulating data before outputting
-$(document).ready(function(){
-getLocation()
-$('#changeTemp').on('click', function (){
+//Good example
+/*
+https://codepen.io/beumsk/pen/Xpbyxv?editors=1010
+*/
 
-if ("#temperature".indexOf("C")>=-1){
-	$("#temperature").html(15 + "&deg;C");
-} else {
-	$("#temperature").html(35 + "&deg;F");
-}
-})
+$(document).ready(function(){
+getLocation();
 
 })
 
